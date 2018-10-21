@@ -39,7 +39,7 @@ public class Is2pabloaledon {
         System.out.println("------ MENU ------\n");
         System.out.println("Introduzca el numero de la opcion que desea escoger\n");
         System.out.println("1- Alta de usuario\n2- Alta objeto\n3- Alquiler objeto");
-        System.out.println("4- Listar todos los objetos\n5- Baja de objeto\n6- Mostrar saldos\n7- Salir");
+        System.out.println("4- Listar todos los objetos\n5- Baja de objeto\n6- Mostrar saldos\n7- Modificar importe objeto\n8- Salir");
         
         
         do{
@@ -76,10 +76,14 @@ public class Is2pabloaledon {
                     MostrarSaldos(listaAlquileres);
                     break;
                 case 7:
+                    System.out.println("Modificar importe objeto\n");
+                    listaObjetos = ModificarImporteObjeto(listaObjetos);
+                    break;
+                case 8:
                     System.out.println("Salir\n");
                     break;
             }        
-        }while(opcion != 7);
+        }while(opcion != 8);
     } 
     
     public static Usuario AltaUsuario(int id){
@@ -275,5 +279,32 @@ public class Is2pabloaledon {
             }
         }
         return enc;
+    }
+    
+    public static HashSet<Objeto> ModificarImporteObjeto(HashSet<Objeto> listaObjetos){
+        Scanner teclado;
+        int idobjeto;
+        HashSet<Objeto> aux = new HashSet<Objeto>();
+        
+        ListarObjetos(listaObjetos);
+        System.out.println("Introduce el id del objeto: ");
+        teclado = new Scanner(System.in);
+        idobjeto = teclado.nextInt();
+        
+        Iterator<Objeto> iteratorObjetos = listaObjetos.iterator();
+        while(iteratorObjetos.hasNext()){
+            Objeto o = new Objeto();
+            o = iteratorObjetos.next();
+            if(o.getIdObjeto() == idobjeto){
+                o.Mostrar();
+                System.out.println("Introduce el nuevo importe del objeto: ");
+                teclado = new Scanner(System.in);
+                int coste = teclado.nextInt();
+                o.setImporte(coste);
+            }
+            aux.add(o);
+        }
+        
+        return aux;
     }
 }
