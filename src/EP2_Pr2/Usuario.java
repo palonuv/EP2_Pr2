@@ -16,13 +16,18 @@ public class Usuario {
     private String nombre;
     private String correo;
     private int id;
-    //Falta lista de objetos del usuario???
+    private String direccion;
+    private String poblacion;
+    private String provincia;
     
-    public Usuario(String n, String c, int id){
+    public Usuario(String n, String c, int id, String direc, String po, String pr){
         this.nombre = n;
         this.correo = c;
         //FALTA COMPROBAR EL FORMATO DEL CORREO
         this.id = id;
+        this.direccion = direc;
+        this.poblacion = po;
+        this.provincia = pr;
     }
     
     public Usuario(){
@@ -39,6 +44,18 @@ public class Usuario {
     
     public int getId(){
         return id;
+    }
+    
+    public String getDireccion(){
+        return direccion;
+    }
+    
+    public String getPoblacion(){
+        return poblacion;
+    }
+    
+    public String getProvincia(){
+        return provincia;
     }
     
     public void setNombre(String n){
@@ -58,5 +75,8 @@ public class Usuario {
         System.out.println("PROPIETARIO " + id);
         System.out.println("Nombre del propietario: " + nombre);
         System.out.println("Correo Electrónico: " + correo);
+        System.out.println("Direccion: " + direccion);
+        System.out.println("Poblacion: " + poblacion);
+        System.out.println("Provincia: " + provincia);
     }
 }

@@ -19,12 +19,15 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Hashtable;
 /**
  * //jorge.esteve@uv.es
  * @author alumno
@@ -55,7 +58,8 @@ public class Is2pabloaledon {
         System.out.println("7- Modificar importe objeto");
         System.out.println("8- Guardar saldos");
         System.out.println("9- Eliminar usuario");
-        System.out.println("10- Salir");
+        System.out.println("10- Listar mas asiduos");
+        System.out.println("11- Salir");
         
         
         do{
@@ -104,10 +108,14 @@ public class Is2pabloaledon {
                     EliminarUsuario(listaUsuarios, listaObjetos);
                     break;
                 case 10:
+                    System.out.println("Listar mas asiduos\n");
+                    ListarMasAsiduos(listaUsuarios,listaAlquileres);
+                    break;
+                case 11:
                     System.out.println("Salir\n");
                     break;
             }        
-        }while(opcion != 10);
+        }while(opcion != 11);
     } 
     
     public static Usuario AltaUsuario(int id){
@@ -122,7 +130,16 @@ public class Is2pabloaledon {
             teclado = new Scanner(System.in);
             c = teclado.nextLine();
         }while(!validarEmailSimple(c));
-        Usuario x = new Usuario(n, c, id);
+        System.out.println("Introduzca la direccion del usuario: ");
+        teclado = new Scanner(System.in);
+        String direccion = teclado.nextLine();
+        System.out.println("Introduzca la poblacion del usuario: ");
+        teclado = new Scanner(System.in);
+        String poblacion = teclado.nextLine();
+        System.out.println("Introduzca la provincia del usuario: ");
+        teclado = new Scanner(System.in);
+        String provincia = teclado.nextLine();
+        Usuario x = new Usuario(n, c, id,direccion,poblacion,provincia);
         
         return x;
     }
@@ -375,6 +392,39 @@ public class Is2pabloaledon {
                 iteratorObjetos.remove();
             }
         }
+    }
+    
+    public static void ListarMasAsiduos(HashSet<Usuario> listaUsuarios, HashSet<Alquiler> listaAlquileres){
+        Map<Usuario, Integer> listaAsiduos = new HashMap<Usuario, Integer>();
+        //HashTable listaAsiduos = new HashTable<Usuario, float>();
+        //HashTable<String,int> h = new HashTable<String,int>();
+        boolean enc = false;
+        
+        
+        //Iterator<Usuario> iteratorUsuarios = listaUsuarios.iterator();
+        //Iterator<Usuario> iteratorAsiduos = listaAsiduos.iterator();
+        Iterator<Usuario> iteratorUsuarios = listaUsuarios.iterator();
+        while(iteratorUsuarios.hasNext()){
+            Usuario u = iteratorUsuarios.next();
+            int importe = 0;
+            Iterator<Alquiler> iteratorAlquileres = listaAlquileres.iterator();
+            while(iteratorAlquileres.hasNext()){
+                if(iteratorAlquileres.next().getAlquilado() ==  u.getId()){
+                    importe += (int)iteratorAlquileres.next().getImporteTotal();
+                }
+                listaAsiduos.put(u, importe);
+            }
+        }
+        
+        Iterator<Usuario> iteratorUsuarios2 = listaUsuarios.iterator();
+        while(iteratorUsuarios2.hasNext()){
+            Usuario z = iteratorUsuarios2.next();
+            if(listaAsiduos.containsKey(z)){
+                z.Mostrar();
+                System.out.println("Importe total: " + listaAsiduos.get(z));
+            }
+        }
         
     }
+    
 }
