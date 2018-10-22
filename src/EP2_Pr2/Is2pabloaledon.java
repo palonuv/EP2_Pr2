@@ -46,8 +46,16 @@ public class Is2pabloaledon {
         
         System.out.println("------ MENU ------\n");
         System.out.println("Introduzca el numero de la opcion que desea escoger\n");
-        System.out.println("1- Alta de usuario\n2- Alta objeto\n3- Alquiler objeto");
-        System.out.println("4- Listar todos los objetos\n5- Baja de objeto\n6- Mostrar saldos\n7- Modificar importe objeto\n8- Guardar saldos\n9- Salir");
+        System.out.println("1- Alta de usuario");
+        System.out.println("2- Alta objeto");
+        System.out.println("3- Alquiler objeto");
+        System.out.println("4- Listar todos los objetos");
+        System.out.println("5- Baja de objeto");
+        System.out.println("6- Mostrar saldos");
+        System.out.println("7- Modificar importe objeto");
+        System.out.println("8- Guardar saldos");
+        System.out.println("9- Eliminar usuario");
+        System.out.println("10- Salir");
         
         
         do{
@@ -92,10 +100,14 @@ public class Is2pabloaledon {
                     GuardarSaldos(listaAlquileres);
                     break;
                 case 9:
+                    System.out.println("Eliminar usuario\n");
+                    EliminarUsuario(listaUsuarios, listaObjetos);
+                    break;
+                case 10:
                     System.out.println("Salir\n");
                     break;
             }        
-        }while(opcion != 9);
+        }while(opcion != 10);
     } 
     
     public static Usuario AltaUsuario(int id){
@@ -338,5 +350,31 @@ public class Is2pabloaledon {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public static void EliminarUsuario(HashSet<Usuario> listaUsuarios, HashSet<Objeto> listaObjetos){
+        Scanner teclado;
+        boolean encontrado = false;
+        
+        ListarUsuarios(listaUsuarios);
+        System.out.println("Introduce el id del usuario que quieres eliminar: ");
+        teclado = new Scanner(System.in);
+        int idusuario = teclado.nextInt();
+        
+        Iterator<Usuario> iteratorUsuarios = listaUsuarios.iterator();
+        while(iteratorUsuarios.hasNext() && !encontrado){
+            if(iteratorUsuarios.next().getId() == idusuario){
+                encontrado = true;
+                iteratorUsuarios.remove();
+            }
+        }
+        
+        Iterator<Objeto> iteratorObjetos = listaObjetos.iterator();
+        while(iteratorObjetos.hasNext()){
+            if(iteratorObjetos.next().getIdUsuario() == idusuario){
+                iteratorObjetos.remove();
+            }
+        }
+        
     }
 }
