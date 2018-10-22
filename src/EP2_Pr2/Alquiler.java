@@ -15,7 +15,8 @@ public class Alquiler {
     private Objeto objeto;
     //private Usuario alquilado;
     private int alquilado;
-    private float coste;
+    private float coste; //coste por dia
+    private float costetotal;
     private Date fechaini;
     private Date fechafin;
     
@@ -25,6 +26,7 @@ public class Alquiler {
         this.coste = coste;
         this.fechaini = fechaini;
         this.fechafin = fechafin;
+        this.costetotal = (float) ((fechafin.getTime() - fechaini.getTime())/86400000)*coste;
     }
     
     public Alquiler(){
@@ -41,6 +43,10 @@ public class Alquiler {
     
     public float getImporte(){
         return coste;
+    }
+    
+    public float getImporteTotal(){
+        return costetotal;
     }
     
     public Date getFechaIni(){

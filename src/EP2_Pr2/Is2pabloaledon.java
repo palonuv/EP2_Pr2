@@ -7,7 +7,15 @@ package EP2_Pr2;
 import EP2_Pr2.Objeto;
 import EP2_Pr2.Usuario;
 import EP2_Pr2.Alquiler;
+import java.io.*;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,7 +47,7 @@ public class Is2pabloaledon {
         System.out.println("------ MENU ------\n");
         System.out.println("Introduzca el numero de la opcion que desea escoger\n");
         System.out.println("1- Alta de usuario\n2- Alta objeto\n3- Alquiler objeto");
-        System.out.println("4- Listar todos los objetos\n5- Baja de objeto\n6- Mostrar saldos\n7- Modificar importe objeto\n8- Salir");
+        System.out.println("4- Listar todos los objetos\n5- Baja de objeto\n6- Mostrar saldos\n7- Modificar importe objeto\n8- Guardar saldos\n9- Salir");
         
         
         do{
@@ -80,10 +88,14 @@ public class Is2pabloaledon {
                     listaObjetos = ModificarImporteObjeto(listaObjetos);
                     break;
                 case 8:
+                    System.out.println("Guardar saldos\n");
+                    GuardarSaldos(listaAlquileres);
+                    break;
+                case 9:
                     System.out.println("Salir\n");
                     break;
             }        
-        }while(opcion != 8);
+        }while(opcion != 9);
     } 
     
     public static Usuario AltaUsuario(int id){
@@ -180,7 +192,7 @@ public class Is2pabloaledon {
         int saldo = 0;
         
         while(iteratorAlquileres.hasNext()){
-            saldo += iteratorAlquileres.next().getObjeto().getImporte();
+            saldo += iteratorAlquileres.next().getImporteTotal();
         }
         
         System.out.println("Saldo total usuario = " + saldo);
@@ -306,5 +318,25 @@ public class Is2pabloaledon {
         }
         
         return aux;
+    }
+    
+    public static void GuardarSaldos(HashSet<Alquiler> listaAlquileres) throws IOException{
+        Iterator<Alquiler> iteratorAlquileres = listaAlquileres.iterator();
+        int saldo = 0;
+        
+        while(iteratorAlquileres.hasNext()){
+            saldo += iteratorAlquileres.next().getImporteTotal();
+        }
+
+        Path path = Paths.get("saldos.txt");
+        Charset utf8 = StandardCharsets.UTF_8;
+        try (BufferedWriter w = Files.newBufferedWriter(path, utf8)){
+            w.write("Saldo total usuarios: " + saldo);
+            w.newLine();
+            w.write("Saldo total Startup: " + saldo*0.1);
+            w.newLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
